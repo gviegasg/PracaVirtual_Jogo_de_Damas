@@ -2,7 +2,6 @@ import pygame
 import os
 
 def criar_tabuleiro():
-    """Cria e retorna o tabuleiro inicial do jogo de damas em uma matriz 8x8."""
     tabuleiro = []
     for i in range(8):
         linha = []
@@ -20,7 +19,6 @@ def criar_tabuleiro():
     return tabuleiro
 
 def eh_movimento_valido(tabuleiro, jogador, l_origem, c_origem, l_destino, c_destino):
-    """Verifica se um movimento é válido (versão simplificada para GUI)."""
     peca = tabuleiro[l_origem][c_origem]
     if peca.lower() != jogador or tabuleiro[l_destino][c_destino] != " ":
         return False
@@ -46,7 +44,6 @@ def eh_movimento_valido(tabuleiro, jogador, l_origem, c_origem, l_destino, c_des
     return False
 
 def mover_peca(tabuleiro, l_origem, c_origem, l_destino, c_destino):
-    """Move a peça e promove a Dama se necessário."""
     peca = tabuleiro[l_origem][c_origem]
     tabuleiro[l_destino][c_destino] = peca
     tabuleiro[l_origem][c_origem] = " "
@@ -75,14 +72,12 @@ BRANCO = (255, 255, 255)
 VERDE_DESTAQUE = (0, 255, 0) 
 
 def desenhar_tabuleiro(tela):
-    """Desenha as casas do tabuleiro."""
     tela.fill(MARROM_CLARO)
     for linha in range(LINHAS):
         for coluna in range(linha % 2, COLUNAS, 2):
             pygame.draw.rect(tela, MARROM_ESCURO, (linha*TAMANHO_CASA, coluna*TAMANHO_CASA, TAMANHO_CASA, TAMANHO_CASA))
 
 def desenhar_pecas(tela, tabuleiro):
-    """Desenha as peças com base na matriz do tabuleiro."""
     raio = TAMANHO_CASA // 2 - 10
     for linha in range(LINHAS):
         for coluna in range(COLUNAS):
