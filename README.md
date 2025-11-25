@@ -1,51 +1,68 @@
-# Trabalho de Engenharia de Software II - Padrões de Desenvolvimento
+# Trabalho de Engenharia de Software II - Padrões de Projeto (Design Patterns)
 
 **Instituição:** Faculdades Senac  
 **Disciplina:** Engenharia de Software II  
-**Tema:** Padrão de Projeto *Adapter* (Estrutural)
+**Entrega:** 25/11/2025  
+**Categoria de Padrões:** Estruturais (Structural Patterns)
 
 ---
 
 ## 👥 Integrantes do Grupo
-Christian Pieper,
-Guilherme Viegas
+1. **Guilherme Viegas** - Responsável pelo Padrão **Adapter** (Projeto: Jogo de Damas)
+2. **Christian Pieper** - Responsável pelo Padrão **Facade** (Projeto: Calculadora Financeira)
 
 ---
 
 ## 🎯 Objetivo do Trabalho
-[cite_start]Estudar padrões de projeto, entender o seu funcionamento e aplicação prática através de um comparativo entre uma solução "ingênua" (sem padrão) e uma solução estruturada (com padrão)[cite: 1238].
-
-## 🧩 O Padrão Escolhido: Adapter
-
-O **Adapter** (ou Adaptador) é um padrão estrutural que permite que objetos com interfaces incompatíveis colaborem entre si.
-
-> [cite_start]**Definição do GoF:** "Converter a interface de uma classe em outra interface, esperada pelos clientes. O Adapter permite que classes com interfaces incompatíveis trabalhem em conjunto – o que, de outra forma, seria impossível."[cite: 111, 977].
-
-### Aplicação no Projeto (Jogo de Damas)
-No contexto deste jogo de damas, o problema de incompatibilidade ocorre entre a **Interface Gráfica** (que "fala" em pixels da tela, ex: `x=450`, `y=300`) e a **Lógica do Jogo** (que "fala" em índices da matriz do tabuleiro, ex: `linha=4`, `coluna=3`).
+Estudar e aplicar padrões de projeto do GoF (Gang of Four), demonstrando na prática a diferença entre uma implementação "ingênua" (sem padrões) e uma solução arquiteturalmente robusta (com padrões). O grupo focou na categoria de **Padrões Estruturais**, que lidam com a composição de classes e objetos.
 
 ---
 
-## 📂 Estrutura do Código
+## 🧩 Padrão 1: Adapter (Aplicado ao Jogo de Damas)
 
-O projeto contém dois arquivos principais para demonstração:
+### Contexto do Problema
+No desenvolvimento do Jogo de Damas, surgiu um problema clássico de incompatibilidade de interfaces:
+* **O Motor do Jogo (Domínio):** Trabalha com uma matriz lógica 8x8 (linhas 0-7, colunas 0-7).
+* **A Interface Gráfica (Pygame):** Trabalha com coordenadas de tela em pixels (ex: x=450, y=300).
 
-1.  `sem_adapter.py`: Implementação onde a lógica do jogo é obrigada a fazer cálculos matemáticos de tela (alto acoplamento).
-2.  `com_adapter.py`: Implementação onde um **Adapter** traduz os pixels para coordenadas de tabuleiro, isolando o jogo da interface.
+Na solução sem padrão, a lógica do jogo estava "suja", misturando regras de damas com cálculos matemáticos de pixels, violando o princípio de responsabilidade única.
 
-### Diagrama Conceitual (Adapter)
+### A Solução (Adapter)
+O padrão **Adapter** (Adaptador) foi utilizado para criar uma ponte entre essas duas interfaces incompatíveis. Ele age como um tradutor: recebe os cliques em pixels do Pygame, converte matemática e geometricamente, e entrega coordenadas limpas (linha, coluna) para o jogo.
 
-* **Client (Jogo):** Espera receber coordenadas limpas `(linha, coluna)`.
-* **Adaptee (Pygame):** Fornece coordenadas brutas `(pixels_x, pixels_y)`.
-* **Adapter (MouseParaTabuleiro):** Recebe os pixels do Adaptee e converte para o formato esperado pelo Client.
+### 📂 Estrutura dos Arquivos
+* `damasSemPad.py`: **Implementação sem o padrão.** Demonstra o acoplamento forte, onde a classe do jogo é obrigada a conhecer o tamanho da tela e fazer contas de divisão para entender onde o usuário clicou.
+* `damasComPad.py`: **Implementação com Adapter.** Introduz a classe `MouseParaTabuleiroAdapter`, que isola completamente a lógica de conversão. O jogo passa a receber apenas comandos limpos.
+* `damas.py`: O jogo completo funcional (utilizando a lógica demonstrada).
+
+### ⚖️ Análise Crítica (Pontos Fortes e Fracos)
+
+**✅ Pontos Fortes (Pros):**
+* **Desacoplamento:** A lógica do jogo não sabe mais que existe uma tela ou pixels. Isso permite trocar a interface gráfica (ex: de Pygame para Terminal) sem mexer nas regras do jogo.
+* **Princípio de Responsabilidade Única (SRP):** A conversão de dados fica isolada na classe adaptadora, limpando o código de negócio.
+* **Reutilização:** Permite integrar classes legadas ou bibliotecas de terceiros sem alterar seu código original.
+
+**❌ Pontos Fracos (Cons):**
+* **Complexidade:** Para problemas muito simples, criar uma classe extra (Adapter) pode ser um excesso de engenharia (*overkill*).
+* **Overhead:** Adiciona uma pequena camada indireta de processamento, embora irrelevante para este tipo de jogo.
+
+---
+
+## 🔄 Comparativo do Grupo: Adapter vs. Facade
+
+Embora ambos sejam padrões **Estruturais** (funcionam como "wrappers" ou invólucros de outras classes), seus propósitos identificados no trabalho foram distintos:
+
+| Característica | Adapter (Jogo de Damas) | Facade (Calculadora Financeira) |
+| :--- | :--- | :--- |
+| **Problema** | Incompatibilidade de interfaces (A não encaixa em B). | Complexidade de subsistema (Muitas classes difíceis de usar). |
+| **Solução** | **Conversão**. Faz a tradução de dados (Pixels $\to$ Matriz). | **Simplificação**. Cria uma interface única para várias funções matemáticas. |
+| **Objetivo** | Fazer funcionar junto o que não foi feito para tal. | Tornar o uso do sistema mais fácil e limpo. |
 
 ---
 
 ## 🚀 Como Executar
 
-### Pré-requisitos
-Você precisará ter o Python instalado e a biblioteca `pygame` e um pentium 486 ja roda o jogo.
+Certifique-se de ter o Python e o Pygame instalados:
 
 ```bash
 pip install pygame
-python damas.py
