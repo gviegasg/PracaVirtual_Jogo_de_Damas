@@ -1,0 +1,30 @@
+🎉 Refatoração Completa - Padrão Adapter
+
+📋 Resumo
+
+**Projeto:** Jogo de Damas (PracaVirtual)
+**Data:** Novembro 2025
+**Objetivo:** Aplicar o padrão de projeto **Adapter (Estrutural)** para desacoplar a lógica do jogo da interface gráfica (Pygame), resolvendo problemas de incompatibilidade de dados.
+
+---
+
+🏗️ Estrutura do Projeto
+
+Organização dos Arquivos
+
+```text
+PracaVirtual_Jogo_de_Damas/
+├── damasSemPad.py              # Versão original ("Ingênua") - Backup
+│   └── Lógica e UI misturadas em um único arquivo
+│
+├── damas_refatorado/           # Versão Refatorada (Final)
+│   ├── core/
+│   │   └── JogoDamas.py        # Lógica de Negócio Pura (Domínio)
+│   │
+│   ├── ui/
+│   │   └── InterfacePygame.py  # Apenas desenho (View)
+│   │
+│   ├── adapters/
+│   │   └── PygameAdapter.py    # ⭐ O Padrão Adapter
+│   │
+│   └── main.py                 # Ponto de entrada (Client)
