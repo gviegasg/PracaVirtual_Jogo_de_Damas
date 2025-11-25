@@ -4,7 +4,6 @@ LARGURA, ALTURA = 640, 640
 LINHAS, COLUNAS = 8, 8
 TAMANHO_CASA = LARGURA // COLUNAS
 
-# Cores
 MARROM_ESCURO = (139, 69, 19)
 MARROM_CLARO = (222, 184, 135)
 PRETO = (0, 0, 0)
@@ -19,7 +18,6 @@ class JogoDamas:
         self.peca_selecionada = None 
 
     def criar_tabuleiro(self):
-        """Cria e retorna a matriz 8x8 inicial."""
         tabuleiro = []
         for i in range(8):
             linha = []
@@ -37,10 +35,7 @@ class JogoDamas:
         return tabuleiro
 
     def processar_jogada(self, linha, coluna):
-        """
-        Recebe coordenadas LIMPAS (0-7) e decide se seleciona ou move.
-        Este é o método principal que o Adapter vai alimentar.
-        """
+
         print(f"[JOGO] Processando ação na casa [{linha}, {coluna}]")
         
         if self.peca_selecionada:
@@ -62,7 +57,6 @@ class JogoDamas:
                 self.peca_selecionada = (linha, coluna)
 
     def eh_movimento_valido(self, l_origem, c_origem, l_destino, c_destino):
-        """Verifica regras de movimento."""
         peca = self.tabuleiro[l_origem][c_origem]
         
         if not (0 <= l_destino < 8 and 0 <= c_destino < 8): return False
@@ -93,7 +87,6 @@ class JogoDamas:
         return False
 
     def mover_peca(self, l_orig, c_orig, l_dest, c_dest):
-        """Executa o movimento na matriz."""
         peca = self.tabuleiro[l_orig][c_orig]
         self.tabuleiro[l_dest][c_dest] = peca
         self.tabuleiro[l_orig][c_orig] = " "
@@ -113,18 +106,12 @@ class JogoDamas:
 
 
 class PygameMouseAdapter:
-    """
-    Converte a interface de entrada do Pygame (Pixels) 
-    para a interface do Jogo (Linha/Coluna).
-    """
+
     def __init__(self, tamanho_casa):
         self.tamanho_casa = tamanho_casa
 
     def converter_clique(self, pos_pixels):
-        """
-        Entrada: (x, y) em pixels
-        Saída: (linha, coluna) índices da matriz
-        """
+
         x, y = pos_pixels
         coluna = x // self.tamanho_casa
         linha = y // self.tamanho_casa
